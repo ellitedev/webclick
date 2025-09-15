@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #80d4ff;
+    --error-color: #ff8080;
+    --bg-color: #0a0a0a;
+    --text-color: #e0e0e0;
+    --text-secondary: #6c6c6c;
+    --border-dark: #333;
+    --input-bg: #0f0f0f;
+}
+
+/* Error page overrides */
+.error-theme {
+    --primary-color: var(--error-color);
+}
+
+body {
+    font-family: 'Cascadia Code', sans-serif;
+    background: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: var(--text-color);
+}
+
+.container {
+    background: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 25% 25%, #1a1a1a 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, #151515 0%, transparent 50%);
+    border: 3px solid var(--primary-color);
+    box-shadow:
+        0 0 20px rgba(128, 212, 255, 0.3),
+        inset 0 0 20px rgba(128, 212, 255, 0.1);
+    max-width: 500px;
+    width: 100%;
+    padding: 30px;
+    position: relative;
+}
+
+.error-theme .container {
+    box-shadow:
+        0 0 20px rgba(255, 128, 128, 0.3),
+        inset 0 0 20px rgba(255, 128, 128, 0.1);
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color), var(--primary-color), var(--primary-color));
+    z-index: -1;
+    animation: borderGlow 2s linear infinite;
+    background-size: 400% 400%;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(128, 212, 255, 0.5);
+    animation: textGlow 5s infinite alternate ease-in-out;
+}
+
+.error-theme h1 {
+    text-shadow: 0 0 10px rgba(255, 128, 128, 0.5);
+}
+
+.subtitle {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.error-message {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.form-group > label {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.sender-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border: 2px solid var(--border-dark);
+    background: var(--input-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.option:hover {
+    border-color: var(--primary-color);
+    background: rgba(128, 212, 255, 0.1);
+    box-shadow: 0 0 15px rgba(128, 212, 255, 0.2);
+}
+
+.option.selected {
+    border-color: var(--primary-color);
+    background: rgba(128, 212, 255, 0.15);
+    box-shadow: 0 0 15px rgba(128, 212, 255, 0.3);
+}
+
+.option label {
+    margin-bottom: 0;
+    cursor: pointer;
+    text-transform: none;
+    font-size: 1rem;
+    letter-spacing: 0;
+    color: var(--text-color);
+}
+
+input[type="radio"] {
+    margin: 0;
+    accent-color: var(--primary-color);
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border-dark);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-family: 'Cascadia Code', monospace;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+    display: none;
+    resize: vertical;
+    min-height: 80px;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(128, 212, 255, 0.05);
+    box-shadow: 0 0 10px rgba(128, 212, 255, 0.2);
+}
+
+input[type="text"]:disabled,
+textarea:disabled {
+    background-color: var(--bg-color);
+    color: #555;
+    border-color: #222;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+    color: #666;
+}
+
+.send-button,
+.retry-button {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border: 2px solid var(--primary-color);
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Cascadia Code', monospace;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 2px;
+    width: 100%;
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.send-button:hover:not(:disabled),
+.retry-button:hover {
+    background: var(--bg-color);
+    color: var(--primary-color);
+    box-shadow:
+        0 0 20px rgba(128, 212, 255, 0.4),
+        inset 0 0 20px rgba(128, 212, 255, 0.1);
+}
+
+.error-theme .retry-button:hover {
+    box-shadow:
+        0 0 20px rgba(255, 128, 128, 0.4),
+        inset 0 0 20px rgba(255, 128, 128, 0.1);
+}
+
+.send-button:disabled {
+    background: #333;
+    color: #666;
+    border-color: #333;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.status-message {
+    margin-top: 20px;
+    padding: 12px 15px;
+    font-weight: bold;
+    display: none;
+    font-family: 'Cascadia Code', monospace;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    border: 2px solid;
+}
+
+.status-message.success {
+    background-color: rgba(128, 212, 255, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(128, 212, 255, 0.2);
+}
+
+.status-message.error {
+    background-color: rgba(255, 128, 128, 0.1);
+    color: var(--error-color);
+    border-color: var(--error-color);
+    box-shadow: 0 0 15px rgba(255, 128, 128, 0.2);
+}
+
+.message-options {
+    margin-top: 20px;
+}
+
+.message-type {
+    margin-bottom: 10px;
+}
+
+.hidden {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+/* Loading and animation states */
+.loading-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(128, 212, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.sending {
+    animation: pulse 1s infinite;
+}
+
+/* Animations */
+@keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(128, 212, 255, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(128, 212, 255, 0.8);
+    }
+}
+
+.error-theme h1 {
+    animation-name: textGlowError;
+}
+
+@keyframes textGlowError {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 128, 128, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 128, 128, 0.8);
+    }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(128, 212, 255, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(128, 212, 255, 0.6); }
+    100% { box-shadow: 0 0 20px rgba(128, 212, 255, 0.4); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
