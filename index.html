@@ -351,6 +351,8 @@
         <div id="statusMessage" class="status-message"></div>
     </div>
 
+    <audio id="audio" src="https://files.ellite.dev/-siXpauSNmT/sound.ogg"></audio>
+
     <script>
         let isButtonDisabled = false;
 
@@ -452,6 +454,11 @@
             setTimeout(() => {
                 statusDiv.style.display = 'none';
             }, 5000);
+        }
+
+        async function playAudio() {
+            const audio = document.getElementById("audio");
+            audio.play();
         }
 
         async function sendClick(userName, message) {
@@ -564,6 +571,12 @@
                 } catch (error) {
                     console.log("Clickee notification failed, but that's expected");
                     // We don't throw this error as we expect it to fail due to CORS
+                }
+
+                try {
+                    await playAudio();
+                } catch (error) {
+                    console.log("Audio player failed.")
                 }
 
                 sendButton.textContent = 'click sent! :3';
