@@ -5,6 +5,7 @@ COPY index.js .
 COPY error.html .
 COPY index.html .
 COPY styles.css .
+COPY ./favicon/ ./favicon/
 
 # non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
