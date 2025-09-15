@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webclicker</title>
+    <style>
+        /* Your existing CSS remains unchanged */
+        @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cascadia Code', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            background: #0a0a0a;
+            background-image:
+                radial-gradient(circle at 25% 25%, #1a1a1a 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #151515 0%, transparent 50%);
+            border: 3px solid #80d4ff;
+            box-shadow:
+                0 0 20px rgba(128, 212, 255, 0.3),
+                inset 0 0 20px rgba(128, 212, 255, 0.1);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #80d4ff, #4da6d9, #80d4ff, #4da6d9);
+            z-index: -1;
+            animation: borderGlow 2s linear infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes borderGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            color: #80d4ff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(128, 212, 255, 0.5);
+            animation: textGlow 5s infinite alternate ease-in-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #6c6c6c;
+            font-size: 0.9rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        @keyframes textGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px rgba(128, 212, 255, 0.5);
+            }
+
+            50% {
+                text-shadow: 0 0 20px rgba(128, 212, 255, 0.8);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group>label {
+            display: block;
+            margin-bottom: 15px;
+            color: #80d4ff;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .sender-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border: 2px solid #333;
+            background: #0f0f0f;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #80d4ff;
+            background: rgba(128, 212, 255, 0.1);
+            box-shadow: 0 0 15px rgba(128, 212, 255, 0.2);
+        }
+
+        .option.selected {
+            border-color: #80d4ff;
+            background: rgba(128, 212, 255, 0.15);
+            box-shadow: 0 0 15px rgba(128, 212, 255, 0.3);
+        }
+
+        .option label {
+            margin-bottom: 0;
+            cursor: pointer;
+            text-transform: none;
+            font-size: 1rem;
+            letter-spacing: 0;
+            color: #e0e0e0;
+        }
+
+        input[type="radio"] {
+            margin: 0;
+            accent-color: #80d4ff;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #333;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            font-family: 'Cascadia Code', monospace;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            display: none;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #80d4ff;
+            background: rgba(128, 212, 255, 0.05);
+            box-shadow: 0 0 10px rgba(128, 212, 255, 0.2);
+        }
+
+        input[type="text"]:disabled,
+        textarea:disabled {
+            background-color: #0a0a0a;
+            color: #555;
+            border-color: #222;
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: #666;
+        }
+
+        .send-button {
+            background: #80d4ff;
+            color: #0a0a0a;
+            border: 2px solid #80d4ff;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Cascadia Code', monospace;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 2px;
+            width: 100%;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: #0a0a0a;
+            color: #80d4ff;
+            box-shadow:
+                0 0 20px rgba(128, 212, 255, 0.4),
+                inset 0 0 20px rgba(128, 212, 255, 0.1);
+        }
+
+        .send-button:disabled {
+            background: #333;
+            color: #666;
+            border-color: #333;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 12px 15px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Cascadia Code', monospace;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            border: 2px solid;
+        }
+
+        .status-message.success {
+            background-color: rgba(128, 212, 255, 0.1);
+            color: #80d4ff;
+            border-color: #80d4ff;
+            box-shadow: 0 0 15px rgba(128, 212, 255, 0.2);
+        }
+
+        .status-message.error {
+            background-color: rgba(255, 128, 128, 0.1);
+            color: #ff8080;
+            border-color: #ff8080;
+            box-shadow: 0 0 15px rgba(255, 128, 128, 0.2);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 20px rgba(128, 212, 255, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(128, 212, 255, 0.6);
+            }
+
+            100% {
+                box-shadow: 0 0 20px rgba(128, 212, 255, 0.4);
+            }
+        }
+
+        .sending {
+            animation: pulse 1s infinite;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(128, 212, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #80d4ff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .message-options {
+            margin-top: 20px;
+        }
+
+        .message-type {
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>webclicker</h1>
+        <div class="subtitle">send penny a click!</br></br>this will send a click to her PC</br>and a notification to
+            her
+            phone!</div>
+        <form id="clickForm">
+            <div class="form-group" id="senderGroup">
+                <label>who's sending this click?</label>
+                <div class="sender-options">
+                    <div class="option selected" onclick="selectOption('anonymous')">
+                        <input type="radio" name="senderType" value="anonymous" id="anonymous" checked>
+                        <label for="anonymous">send anonymously</label>
+                    </div>
+                    <div class="option" onclick="selectOption('custom')">
+                        <input type="radio" name="senderType" value="custom" id="custom">
+                        <label for="custom">enter your name</label>
+                    </div>
+                </div>
+                <input type="text" id="customName" placeholder="> enter_your_name_here..." disabled maxlength="30">
+            </div>
+
+            <div class="form-group message-options">
+                <label>what message would you like to send?</label>
+                <div class="sender-options">
+                    <div class="option message-type selected" onclick="selectMessageType('default')">
+                        <input type="radio" name="messageType" value="default" id="defaultMessage" checked>
+                        <label for="defaultMessage" id="defaultMessageLabel">sent a click!</label>
+                    </div>
+                    <div class="option message-type" onclick="selectMessageType('custom')">
+                        <input type="radio" name="messageType" value="custom" id="customMessage">
+                        <label for="customMessage">custom message</label>
+                    </div>
+                </div>
+                <textarea id="customMessageText" placeholder="> type_your_message_here..." disabled
+                    maxlength="200"></textarea>
+            </div>
+
+            <button type="submit" class="send-button" id="sendButton">
+                send click!
+            </button>
+        </form>
+
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script>
+        let isButtonDisabled = false;
+
+        // Function to update the default message label with current username
+        function updateDefaultMessageLabel() {
+            const senderType = document.querySelector('input[name="senderType"]:checked');
+            let userName = "anonymous";
+
+            if (senderType && senderType.value === 'custom') {
+                userName = document.getElementById('customName').value.trim() || "anonymous";
+            }
+
+            document.getElementById('defaultMessageLabel').textContent = `${userName} sent a click!`;
+        }
+
+        // Check if user had previously selected custom name
+        const savedName = localStorage.getItem('webclicker_username');
+        if (savedName) {
+            selectOption('custom');
+            document.getElementById('customName').value = savedName;
+            updateDefaultMessageLabel();
+        }
+
+        // Check if user had previously selected custom message
+        const savedMessage = localStorage.getItem('webclicker_custom_message');
+        if (savedMessage) {
+            selectMessageType('custom');
+            document.getElementById('customMessageText').value = savedMessage;
+        }
+
+        function selectOption(type) {
+            // Clear previous selection
+            document.querySelectorAll('.sender-options .option').forEach(opt => opt.classList.remove('selected'));
+
+            // Select the clicked option
+            const selectedOption = document.querySelector(`#${type}`).closest('.option');
+            selectedOption.classList.add('selected');
+
+            // Check the radio button
+            document.getElementById(type).checked = true;
+
+            // Enable/disable the custom name input
+            const customNameInput = document.getElementById('customName');
+            if (type === 'custom') {
+                customNameInput.style.display = 'block';
+                customNameInput.disabled = false;
+                customNameInput.focus();
+            } else {
+                customNameInput.style.display = 'none';
+                customNameInput.disabled = true;
+                // Don't clear the value so user doesn't lose their name
+            }
+
+            // Update the default message label
+            updateDefaultMessageLabel();
+        }
+
+        function selectMessageType(type) {
+            // Clear previous selection
+            document.querySelectorAll('.message-type').forEach(opt => opt.classList.remove('selected'));
+
+            // Select the clicked option
+            const selectedOption = document.querySelector(`#${type}Message`).closest('.option');
+            selectedOption.classList.add('selected');
+
+            // Check the radio button
+            document.getElementById(`${type}Message`).checked = true;
+
+            // Enable/disable the custom message textarea
+            const customMessageText = document.getElementById('customMessageText');
+            if (type === 'custom') {
+                customMessageText.style.display = 'block';
+                customMessageText.disabled = false;
+                customMessageText.focus();
+
+                // Hide sender options when custom message is selected
+                document.getElementById('senderGroup').classList.add('hidden');
+            } else {
+                customMessageText.style.display = 'none';
+                customMessageText.disabled = true;
+                // Don't clear the value so user doesn't lose their message
+
+                // Show sender options when default message is selected
+                document.getElementById('senderGroup').classList.remove('hidden');
+
+                // Update the default message label
+                updateDefaultMessageLabel();
+            }
+        }
+
+        function showStatus(message, isError = false) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = isError ?
+                `<span class="loading-spinner"></span> ${message}` :
+                message;
+            statusDiv.className = `status-message ${isError ? 'error' : 'success'}`;
+            statusDiv.style.display = 'block';
+
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function sendClick(userName, message) {
+            try {
+                const formData = new FormData();
+                formData.append('title', 'click!');
+                formData.append('message', message);
+                formData.append('priority', '8');
+
+                const postResponse = await fetch('https://gotify.ellite.dev/message?token=ArNZVOvofqYXqWy', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (postResponse.ok) {
+                    return true;
+                }
+                throw new Error('Failed to send notification');
+            } catch (error) {
+                console.error('Error sending click:', error);
+                throw error;
+            }
+        }
+
+        // Function to handle the CORS error for clickeeNotify
+        async function clickeeNotify() {
+            try {
+                // This will fail due to CORS, but we try anyway
+                const response = await fetch('https://clickee.girlfag.club', {
+                    method: 'GET',
+                    // Adding mode: 'no-cors' will prevent the CORS error from being thrown
+                    // but note that you won't be able to read the response
+                    mode: 'no-cors'
+                });
+                // Since we're using no-cors, we can't read the response, but the request will go through
+                console.log('Clickee notification sent (CORS handled with no-cors mode)');
+            } catch (error) {
+                // This will still catch any network errors, but not CORS errors
+                console.log('Error sending clickee notification:', error.message);
+                // We don't throw the error because we expect CORS to fail
+            }
+        }
+
+        // Modified form submission handler to handle CORS gracefully
+        document.getElementById('clickForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            if (isButtonDisabled) return;
+
+            // Get the selected sender type
+            const senderType = document.querySelector('input[name="senderType"]:checked');
+            if (!senderType) {
+                showStatus('Please select how you want to send the click!', true);
+                return;
+            }
+
+            // Get the selected message type
+            const messageType = document.querySelector('input[name="messageType"]:checked');
+            if (!messageType) {
+                showStatus('Please select a message type!', true);
+                return;
+            }
+
+            let userName;
+            if (messageType.value === 'default') {
+                if (senderType.value === 'anonymous') {
+                    userName = 'anonymous';
+                } else {
+                    userName = document.getElementById('customName').value.trim();
+                    if (!userName) {
+                        showStatus('Please enter your name!', true);
+                        return;
+                    }
+
+                    // Save username for future use
+                    localStorage.setItem('webclicker_username', userName);
+                }
+            } else {
+                // For custom messages, we don't need a username
+                userName = "someone";
+            }
+
+            let message;
+            if (messageType.value === 'default') {
+                message = `${userName} sent a click!`;
+            } else {
+                message = document.getElementById('customMessageText').value.trim();
+                if (!message) {
+                    showStatus('Please enter your message!', true);
+                    return;
+                }
+
+                // Save custom message for future use
+                localStorage.setItem('webclicker_custom_message', message);
+            }
+
+            // Disable button and change text
+            const sendButton = document.getElementById('sendButton');
+            isButtonDisabled = true;
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<span class="loading-spinner"></span> sending click...';
+            sendButton.classList.add('sending');
+
+            try {
+                await sendClick(userName, message);
+
+                // Try to notify clickee but don't fail the whole process if it errors
+                try {
+                    await clickeeNotify();
+                } catch (error) {
+                    console.log("Clickee notification failed, but that's expected");
+                    // We don't throw this error as we expect it to fail due to CORS
+                }
+
+                sendButton.textContent = 'click sent! :3';
+                sendButton.classList.remove('sending');
+                showStatus(`click successfully sent!`);
+            } catch (error) {
+                sendButton.textContent = 'send click!';
+                sendButton.classList.remove('sending');
+                sendButton.disabled = false;
+                isButtonDisabled = false;
+                showStatus("failed to send click :c please try again", true);
+                return;
+            }
+
+            // Re-enable button after 5 seconds
+            setTimeout(() => {
+                sendButton.textContent = 'send click!';
+                sendButton.disabled = false;
+                isButtonDisabled = false;
+            }, 5000);
+        });
+
+        // Handle custom name input enter key
+        document.getElementById('customName').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                document.getElementById('clickForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Handle custom message input enter key (with shift for new line)
+        document.getElementById('customMessageText').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('clickForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Update the default message label when custom name changes
+        document.getElementById('customName').addEventListener('input', updateDefaultMessageLabel);
+
+        // Initialize the default message label on page load
+        updateDefaultMessageLabel();
+    </script>
+</body>
+
+</html>
