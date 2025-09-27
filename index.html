@@ -11,9 +11,7 @@
 <body>
     <div class="container">
         <h1>webclicker</h1>
-        <div class="subtitle">send penny a click!</br></br>this will send a click to her PC</br>and a notification to
-            her
-            phone!</div>
+        <div class="subtitle">send solsys a click!</br></br>this will send a click to their phone</div>
         <form id="clickForm">
             <div class="form-group" id="senderGroup">
                 <label>who's sending this click?</label>
@@ -171,7 +169,7 @@
                 formData.append('message', message);
                 formData.append('priority', '8');
 
-                const postResponse = await fetch('https://gotify.ellite.dev/message?token=ArNZVOvofqYXqWy', {
+                const postResponse = await fetch('https://gotify.ellite.dev/message?token=ABi_nkF87jM.JpQ', {
                     method: 'POST',
                     body: formData
                 });
@@ -183,25 +181,6 @@
             } catch (error) {
                 console.error('Error sending click:', error);
                 throw error;
-            }
-        }
-
-        // Function to handle the CORS error for clickeeNotify
-        async function clickeeNotify() {
-            try {
-                // This will fail due to CORS, but we try anyway
-                const response = await fetch('https://clickee.girlfag.club', {
-                    method: 'GET',
-                    // Adding mode: 'no-cors' will prevent the CORS error from being thrown
-                    // but note that you won't be able to read the response
-                    mode: 'no-cors'
-                });
-                // Since we're using no-cors, we can't read the response, but the request will go through
-                console.log('Clickee notification sent (CORS handled with no-cors mode)');
-            } catch (error) {
-                // This will still catch any network errors, but not CORS errors
-                console.log('Error sending clickee notification:', error.message);
-                // We don't throw the error because we expect CORS to fail
             }
         }
 
@@ -267,14 +246,6 @@
 
             try {
                 await sendClick(userName, message);
-
-                // Try to notify clickee but don't fail the whole process if it errors
-                try {
-                    await clickeeNotify();
-                } catch (error) {
-                    console.log("Clickee notification failed, but that's expected");
-                    // We don't throw this error as we expect it to fail due to CORS
-                }
 
                 try {
                     await playAudio();
